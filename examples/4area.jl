@@ -59,14 +59,14 @@ init_val = init_system(model, parameters)
 #Compute strategy by SDDP
 println("Start strategy computation..")
 
-#train!(strategy, init_val, model, inflow_model, feas_spaces, parameters; optimizer=optimizer)
+train!(strategy, init_val, model, inflow_model, feas_spaces, parameters; optimizer=optimizer)
 # using Serialization
 # serialize(joinpath(@__DIR__, "strategy.jls"), strategy) # Save cuts to file
 # strategy = deserialize(joinpath(@__DIR__, "strategy.jls")) # Load cuts from file
 
 # Save strategy to file
 file = File(format"JLD2", joinpath(datapath, "strategy.jld2"))
-#save(file, "strategy", strategy)
+save(file, "strategy", strategy)
 
 # Load strategy from file
 data = JLD2.load(file) 
