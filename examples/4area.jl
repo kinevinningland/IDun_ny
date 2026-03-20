@@ -23,7 +23,7 @@ println("Threads available: ",Threads.nthreads())
 
 #datapath = "C:\\datasets\\RES100_tutorial\\4area_test\\"
 #datapath = joinpath(@__DIR__, "..", "datasets-main", "baseline_2")
-dataset = "/cluster/home/kinevin/Kode2/datasets-main/baseline_2"
+datapath = "/cluster/home/kinevin/Kode2/datasets-main/baseline_2"
 
 model = load(datapath, parameters) 
 inflow_model = load_inflow(datapath, model, parameters)
