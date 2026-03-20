@@ -322,8 +322,8 @@ struct Model
     # End value
     EV # type EndValuation
     #Areas to price zones
-    PZone #Added
-    NPZone #Added
+    #PZone #Added
+    #NPZone #Added
 end
 
 struct PriceZoneMap #Added

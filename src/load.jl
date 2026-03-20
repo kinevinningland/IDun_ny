@@ -21,13 +21,13 @@ function load(dataset::String, parameters::Parameters)::Model
 
     EV = ReadEndValue(dataset,NHSys)
 
-    PZone = create_price_zones().price_zones #Added
-    NPZone = length(PZone) #Added
+    #PZone = create_price_zones().price_zones #Added
+    #NPZone = length(PZone) #Added
 
     model = Model(AHData, AMData, DMData, H2Data, USMod, WPData, DRData, NArea, ModInfReg,
         ModInfUReg, AreaName, MyKeys, MaxModArea, MCon, LineCap, LineLoss, NLine,
         NCascade, HCascade, NHSys,HSys, NAreaSys, AreaSys, USModSys,
-        InfReg, RegFrac, EV, PZone, NPZone) #Added price zone mapping to model
+        InfReg, RegFrac, EV) #Added price zone mapping to model, tatt bort PZone, NPZone
 
     return model
 end
