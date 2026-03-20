@@ -1,11 +1,14 @@
 using Revise # Sikrer at oppdateringer av kildekode kompileres automatisk
 using Pkg
-Pkg.activate(@__DIR__) # Aktiverer lokalt pakkemiljø
+Pkg.activate(joinpath(@__DIR__, ".."))#
+#Pkg.activate(@__DIR__) # Aktiverer lokalt pakkemiljø
 # Pkg.resolve()
 Pkg.instantiate()
 
 using ReSDDP
 include("params.jl") # Import parameters
+include(joinpath(@__DIR__, "..", "src", "LeseDataset.jl"))
+using .LeseData
 
 import JuMP
 import CPLEX
