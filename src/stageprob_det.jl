@@ -67,7 +67,7 @@ module StageProbDet
 
       for iArea in 1:NHSys, iMod in 1:AHData[iArea].NMod
          if AHData[iArea].MData[iMod].MaxRes <= NULL_RES_TOL
-            @constraint(M,
+            @constraint(M,resbalReg0[iArea=1:NHSys,iMod=1:AHData[iArea].NMod],
                   res[iArea,iMod,1]
                   + DT*M3S2MM3*(dis[iArea,iMod,1]+byp[iArea,iMod,1]+spi[iArea,iMod,1]) 
                   - DT*M3S2MM3*(sum(dis[iArea,USMod[iArea].USModA[iMod].Dis[iDisUS],1] for iDisUS=1:USMod[iArea].USModA[iMod].NDis))
@@ -76,7 +76,7 @@ module StageProbDet
                   >= -1e-6
             )
          else
-            @constraint(M,
+            @constraint(M,resbalReg0[iArea=1:NHSys,iMod=1:AHData[iArea].NMod],
                   res[iArea,iMod,1]
                   + DT*M3S2MM3*(dis[iArea,iMod,1]+byp[iArea,iMod,1]+spi[iArea,iMod,1]) 
                   - DT*M3S2MM3*(sum(dis[iArea,USMod[iArea].USModA[iMod].Dis[iDisUS],1] for iDisUS=1:USMod[iArea].USModA[iMod].NDis))
