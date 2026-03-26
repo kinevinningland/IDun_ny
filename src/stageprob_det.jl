@@ -64,28 +64,31 @@ module StageProbDet
       =#
 
       NULL_RES_TOL = 1e-6
+      NULL_BAL_TOL = 1e-6
 
-      for iArea in 1:NHSys, iMod in 1:AHData[iArea].NMod
-         if AHData[iArea].MData[iMod].MaxRes <= NULL_RES_TOL
-            @constraint(M,resbalReg0[iArea=1:NHSys,iMod=1:AHData[iArea].NMod],
-                  res[iArea,iMod,1]
-                  + DT*M3S2MM3*(dis[iArea,iMod,1]+byp[iArea,iMod,1]+spi[iArea,iMod,1]) 
-                  - DT*M3S2MM3*(sum(dis[iArea,USMod[iArea].USModA[iMod].Dis[iDisUS],1] for iDisUS=1:USMod[iArea].USModA[iMod].NDis))
-                  - DT*M3S2MM3*(sum(byp[iArea,USMod[iArea].USModA[iMod].Byp[iBypUS],1] for iBypUS=1:USMod[iArea].USModA[iMod].NByp))
-                  - DT*M3S2MM3*(sum(spi[iArea,USMod[iArea].USModA[iMod].Spi[iSpiUS],1] for iSpiUS=1:USMod[iArea].USModA[iMod].NSpi))
-                  >= -1e-6
-            )
-         else
-            @constraint(M,resbalReg0[iArea=1:NHSys,iMod=1:AHData[iArea].NMod],
-                  res[iArea,iMod,1]
-                  + DT*M3S2MM3*(dis[iArea,iMod,1]+byp[iArea,iMod,1]+spi[iArea,iMod,1]) 
-                  - DT*M3S2MM3*(sum(dis[iArea,USMod[iArea].USModA[iMod].Dis[iDisUS],1] for iDisUS=1:USMod[iArea].USModA[iMod].NDis))
-                  - DT*M3S2MM3*(sum(byp[iArea,USMod[iArea].USModA[iMod].Byp[iBypUS],1] for iBypUS=1:USMod[iArea].USModA[iMod].NByp))
-                  - DT*M3S2MM3*(sum(spi[iArea,USMod[iArea].USModA[iMod].Spi[iSpiUS],1] for iSpiUS=1:USMod[iArea].USModA[iMod].NSpi))
-                  == 0.0
-            )
-         end
-      end
+      # Vanlige magasin
+      @constraint(M, resbalReg0[iArea=1:NHSys, iMod=1:AHData[iArea].NMod;
+         AHData[iArea].MData[iMod].MaxRes > NULL_RES_TOL],
+
+         res[iArea,iMod,1]
+         + DT*M3S2MM3*(dis[iArea,iMod,1]+byp[iArea,iMod,1]+spi[iArea,iMod,1]) 
+         - DT*M3S2MM3*(sum(dis[iArea,USMod[iArea].USModA[iMod].Dis[iDisUS],1] for iDisUS=1:USMod[iArea].USModA[iMod].NDis))
+         - DT*M3S2MM3*(sum(byp[iArea,USMod[iArea].USModA[iMod].Byp[iBypUS],1] for iBypUS=1:USMod[iArea].USModA[iMod].NByp))
+         - DT*M3S2MM3*(sum(spi[iArea,USMod[iArea].USModA[iMod].Spi[iSpiUS],1] for iSpiUS=1:USMod[iArea].USModA[iMod].NSpi))
+         == 0.0
+      )
+
+      # Nullmagasin (toleranse)
+      @constraint(M, resbalReg0_tol_lb[iArea=1:NHSys, iMod=1:AHData[iArea].NMod;
+         AHData[iArea].MData[iMod].MaxRes <= NULL_RES_TOL],
+
+         res[iArea,iMod,1]
+         + DT*M3S2MM3*(dis[iArea,iMod,1]+byp[iArea,iMod,1]+spi[iArea,iMod,1]) 
+         - DT*M3S2MM3*(sum(dis[iArea,USMod[iArea].USModA[iMod].Dis[iDisUS],1] for iDisUS=1:USMod[iArea].USModA[iMod].NDis))
+         - DT*M3S2MM3*(sum(byp[iArea,USMod[iArea].USModA[iMod].Byp[iBypUS],1] for iBypUS=1:USMod[iArea].USModA[iMod].NByp))
+         - DT*M3S2MM3*(sum(spi[iArea,USMod[iArea].USModA[iMod].Spi[iSpiUS],1] for iSpiUS=1:USMod[iArea].USModA[iMod].NSpi))
+         >= -NULL_BAL_TOL
+      )
 
       #RESERVOIR BALANCE [MM3/DT]
       @constraint(M,resbalReg[iArea=1:NHSys,iMod=1:AHData[iArea].NMod,k=2:NK],res[iArea,iMod,k]-res[iArea,iMod,k-1]
