@@ -264,7 +264,9 @@ function print_results(dataset::String,RT::Result,model::Model,parameters::Param
          for iStage = 1:parameters.Control.NStageSim
             for k = 1:parameters.Time.NK
                #sum market
-               @printf(out,"%16.6f ",sum(RT.MarkTable[iArea,iMark,iScen,iStage,k] for iMark=1:model.AMData[iArea].NMStep))
+               #@printf(out,"%16.6f ",sum(RT.MarkTable[iArea,iMark,iScen,iStage,k] for iMark=1:model.AMData[iArea].NMStep))
+               val = sum(RT.MarkTable[iArea,iMark,iScen,iStage,k] for iMark=1:model.AMData[iArea].NMStep; init=0.0)
+               @printf(out, "%16.6f ", val)
             end
          end
          @printf(out,"%s \n","")
