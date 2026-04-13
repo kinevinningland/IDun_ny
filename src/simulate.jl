@@ -119,6 +119,7 @@ function simulate_aggregated(model::Model, inflow_model::InflowModel, parameters
     SimulatedCost = zeros(Float64, parameters.Control.NScenSim)
 
     SS = SampleScenario(parameters.Control.NScenSim, parameters.Control.NStageSim, parameters.Time.NWeek, inflow_model, parameters.Control.LExtreme; fixed_seed = fixed_seed)
+    SampledWindYears = fill(1, parameters.Control.NScenSim) #lagt til 
 
     NMaxMStep = maximum([model.AMData[iArea].NMStep for iArea in 1:model.NArea])
 
@@ -159,7 +160,8 @@ function simulate_aggregated(model::Model, inflow_model::InflowModel, parameters
                     model.H2Data,optimizer)
 
                 for iScen = start_scen:end_scen
-                    wYear = sample(strategy.WindYears)
+                    #wYear = sample(strategy.WindYears)
+                    wYear = SampledWindYears[iScen]
                     #Update constraint right-hand sides
                     Zstate = zeros(Float64,inflow_model.NSer)
                     Eps = inflow_model.Resid[1:inflow_model.NSer,sWeek,SS.SScen[iScen,t]]
