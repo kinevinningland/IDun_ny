@@ -63,6 +63,7 @@ module StageProbDet
       @constraint(M,resbalReg0[iArea=1:NHSys,iMod=1:AHData[iArea].NMod],res[iArea,iMod,1]
                 -res0[iArea,iMod]
                 == 0.0)
+      end
 
       
 
