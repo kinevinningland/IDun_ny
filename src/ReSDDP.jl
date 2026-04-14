@@ -11,6 +11,7 @@ module ReSDDP
     include("./aggregate.jl")
     include("./readinput.jl")
     include("./sampletree.jl")
+    include("price_zonal_mapping.jl")
     include("./solvefwd.jl")
     include("./solvebwd.jl")
     include("./stageprob.jl")
