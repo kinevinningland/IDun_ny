@@ -242,7 +242,7 @@ module StageProbFull
       #@constraint(M,capbal[k=1:NK],sum(cap[iSys] for iArea=1:NArea for iSys=1:NAreaSys[iArea]) >= WeekFrac*CapReq)
 
       #WIND POWER TARGET [GWh/step]
-      @constraint(M,wptarget[iArea=1:NArea,k=1:NK], wprod[iArea,k] <= max(MyWPData[iArea,k],0.0))
+      #@constraint(M,wptarget[iArea=1:NArea,k=1:NK], wprod[iArea,k] <= max(MyWPData[iArea,k],0.0))
 
       if LEndVal
          if EV.NEndCut > 0
