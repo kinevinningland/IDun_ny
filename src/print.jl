@@ -420,6 +420,7 @@ function print_results(dataset::String,RT::Result,model::Model,parameters::Param
                @printf(out,"%16.6f ",RT.HRampTable[iSys,iScen,iStage])
             end
          end
+         """
          @printf(out,"%s \n","")
          for iStage = 1:parameters.Control.NStageSim
             for k = 1:parameters.Time.NK
@@ -427,6 +428,8 @@ function print_results(dataset::String,RT::Result,model::Model,parameters::Param
                @printf(out,"%16.6f ",RT.HCapTable[iSys,iScen,iStage])
             end
          end
+         """
+
          @printf(out,"%s \n","")
          for iStage = 1:parameters.Control.NStageSim
             for k = 1:parameters.Time.NK
