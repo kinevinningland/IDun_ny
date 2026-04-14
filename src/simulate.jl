@@ -211,6 +211,12 @@ function simulate_aggregated(model::Model, inflow_model::InflowModel, parameters
                         termstat = termination_status(SP_FORW)
                         error(println("Solver terminated with status $termstat in forward iteration (stage,scen): ",t," ",iScen))
                     end
+                    println("-----")
+                    println("Scen=", iScen, ", Stage=", t)
+                    println("Obj = ", JuMP.objective_value(SP_FORW))
+                    println("Wind input sample = ", model.WPData[1,wYear,sWeek,1])
+                    println("Inflow sample = ", DevEpsVec[1] + inflow_model.InflowMean[1,sWeek])
+                    println("------")
                     save!(ResultTable, SP_FORW, model.AMData,model.H2Data, InflowSys, model.NArea, model.NHSys, parameters.Time.NK, model.NLine, iScen, t)
 
                     for iSys = 1:model.NHSys
