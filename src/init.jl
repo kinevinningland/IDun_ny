@@ -96,11 +96,16 @@ function init_system(model::Model, parameters::Parameters)::InitialValues
     return InitialValues(ResInit0,H2Init0)
 end
 
-function init_result(NArea,NHSys,NMaxMStep,NScen,NStage,NK,NLine)::Result
+ function init_result(NArea,NHSys,NMaxMStep,NScen,NStage,NK,NLine,NZ)::Result
     ReservoirTable = zeros(Float64,NHSys,NScen,NStage,NK) 
     HProdTable = zeros(Float64,NHSys,NScen,NStage,NK) 
     HRampTable = zeros(Float64,NHSys,NScen,NStage)  
-    HCapTable = zeros(Float64,NHSys,NScen,NStage)   
+    HCapTable = zeros(Float64,NHSys,NScen,NStage, NK)   #lagt til NK
+    CapZoneUpTable   = zeros(Float64, NZ, NScen, NStage, NK)
+    CapZoneDownTable = zeros(Float64, NZ, NScen, NStage, NK) 
+    HydroCapUpTable   = zeros(Float64, NHSys, NScen, NStage, NK)
+    HydroCapDownTable = zeros(Float64, NHSys, NScen, NStage, NK)
+    WindCapDownTable = zeros(Float64, NArea, NScen, NStage, NK)
     MarkTable = zeros(Float64,NArea,NMaxMStep,NScen,NStage,NK) 
     FlowTable = zeros(Float64,NLine,NScen,NStage,NK) 
     SpillTable = zeros(Float64,NHSys,NScen,NStage,NK) 
@@ -113,12 +118,16 @@ function init_result(NArea,NHSys,NMaxMStep,NScen,NStage,NK,NLine)::Result
     DemandDnTable = zeros(Float64,NArea,NScen,NStage,NK)
     H2StoreTable = zeros(Float64,NArea,NScen,NStage,NK)
     H2DisTable = zeros(Float64,NArea,NScen,NStage,NK)
+    CapDualTable = zeros(Float64, NArea, NScen, NStage, NK) #added
+    CapDualUpTable = zeros(Float64, 12, NScen, NStage, NK) #added
+    CapDualDownTable = zeros(Float64, 12, NScen, NStage, NK) #added
     ObjTable = zeros(Float64, NScen, NStage)   # ny
     WaterValueTable = zeros(Float64, NHSys, NScen, NStage)
     
     return Result(ReservoirTable,HProdTable,HRampTable,HCapTable,MarkTable,FlowTable,SpillTable,InflowTable,LoadTable,WindTable,PriceTable,
-                  RationingTable,DemandUpTable,DemandDnTable,H2StoreTable,H2DisTable,ObjTable,WaterValueTable)
- end
+                  RationingTable,DemandUpTable,DemandDnTable,H2StoreTable,H2DisTable,CapDualTable,
+                  WindCapDownTable,HydroCapDownTable,HydroCapUpTable,CapZoneDownTable,CapZoneUpTable,CapDualUpTable,CapDualDownTable,ObjTable,WaterValueTable) #lagt til siste
+end
 
  function init_detailed_result(NArea,NHSys,NMaxMStep,NScen,NStage,NK,NLine,NMaxMod)::DetailedResult
 

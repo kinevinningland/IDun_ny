@@ -11,6 +11,180 @@ function print_results_h5(dataset::String,RT::Result,model::Model,parameters::Pa
    attrs(file)["NStage"] = parameters.Control.NStageSim
    attrs(file)["NK"]     = parameters.Time.NK
 
+   price_zones = ["NO1","NO2","NO3","NO4","NO5","Others"]#,"SE1","SE2","SE3","SE4","DK1","DK2","FI","Others"]#["NUMEDAL","OTRA","TERM","TEV"]#
+   area_to_zone = fill(0, model.NArea)
+   area_to_zone[21] = findfirst(==("Others"), price_zones)
+   area_to_zone[22] = findfirst(==("Others"), price_zones)
+   area_to_zone[23] = findfirst(==("Others"), price_zones)
+   area_to_zone[24] = findfirst(==("Others"), price_zones)
+   area_to_zone[25] = findfirst(==("Others"), price_zones)
+   area_to_zone[26] = findfirst(==("Others"), price_zones)
+   area_to_zone[27] = findfirst(==("Others"), price_zones)     
+   area_to_zone[28] = findfirst(==("Others"), price_zones)
+   area_to_zone[29] = findfirst(==("Others"), price_zones)
+   area_to_zone[30] = findfirst(==("Others"), price_zones)
+   area_to_zone[31] = findfirst(==("Others"), price_zones)
+   area_to_zone[32] = findfirst(==("Others"), price_zones)
+   area_to_zone[43] = findfirst(==("Others"), price_zones)
+   area_to_zone[44] = findfirst(==("Others"), price_zones) 
+   area_to_zone[45] = findfirst(==("Others"), price_zones)
+   area_to_zone[46] = findfirst(==("Others"), price_zones)
+   area_to_zone[47] = findfirst(==("Others"), price_zones)
+   area_to_zone[48] = findfirst(==("Others"), price_zones)
+   area_to_zone[49] = findfirst(==("Others"), price_zones)
+   area_to_zone[50] = findfirst(==("Others"), price_zones)
+   area_to_zone[51] = findfirst(==("Others"), price_zones)
+   area_to_zone[52] = findfirst(==("Others"), price_zones)
+   area_to_zone[53] = findfirst(==("Others"), price_zones)
+   area_to_zone[54] = findfirst(==("Others"), price_zones) 
+   area_to_zone[55] = findfirst(==("Others"), price_zones)
+   area_to_zone[58] = findfirst(==("Others"), price_zones)
+   area_to_zone[59] = findfirst(==("Others"), price_zones)
+   area_to_zone[60] = findfirst(==("Others"), price_zones)
+   area_to_zone[61] = findfirst(==("Others"), price_zones)
+   area_to_zone[63] = findfirst(==("Others"), price_zones)
+   area_to_zone[64] = findfirst(==("Others"), price_zones)
+   area_to_zone[65] = findfirst(==("Others"), price_zones)
+   area_to_zone[69] = findfirst(==("Others"), price_zones)
+   area_to_zone[70] = findfirst(==("Others"), price_zones)
+   area_to_zone[71] = findfirst(==("Others"), price_zones)
+   area_to_zone[76] = findfirst(==("Others"), price_zones)
+   area_to_zone[77] = findfirst(==("Others"), price_zones)
+   area_to_zone[78] = findfirst(==("Others"), price_zones)
+   area_to_zone[72] = findfirst(==("Others"), price_zones)
+
+   area_to_zone[33] = findfirst(==("NO3"), price_zones) #OK
+   area_to_zone[34] = findfirst(==("NO5"), price_zones) #OK
+   area_to_zone[35] = findfirst(==("NO2"), price_zones) #OK
+   area_to_zone[36] = findfirst(==("NO2"), price_zones) #OK
+   area_to_zone[39] = findfirst(==("Others"), price_zones) #OK
+   area_to_zone[56] = findfirst(==("Others"), price_zones) # DK1 eller DK2? Hydrogen danmark
+   area_to_zone[66] = findfirst(==("NO3"), price_zones) # H2-M?
+   area_to_zone[67] = findfirst(==("NO2"), price_zones) #H2-S?
+   area_to_zone[68] = findfirst(==("NO4"), price_zones) #H2-N?
+   area_to_zone[73] = findfirst(==("NO4"), price_zones) #OK
+   area_to_zone[74] = findfirst(==("NO4"), price_zones) #OK
+   area_to_zone[75] = findfirst(==("NO4"), price_zones) #OK
+   area_to_zone[57] = findfirst(==("Others"), price_zones) #OK
+   area_to_zone[62] = findfirst(==("Others"), price_zones) #Sweden-H2?
+      
+
+   area_to_zone[1] = findfirst(==("NO1"), price_zones) #OK
+   area_to_zone[2] = findfirst(==("NO1"), price_zones) #spørre om NO1 eller NO2, SørØst
+   area_to_zone[3] = findfirst(==("NO1"), price_zones) #spørre, NO1,NO3,NO5? Hallingdal
+   area_to_zone[4] = findfirst(==("NO2"), price_zones) #spørre NO1,NO2? Telemark
+
+   area_to_zone[5] = findfirst(==("NO2"), price_zones) #OK
+   area_to_zone[6] = findfirst(==("NO2"), price_zones) #OK
+
+   area_to_zone[8] = findfirst(==("NO3"), price_zones) #OK
+   area_to_zone[9] = findfirst(==("NO4"), price_zones) #OK
+
+   area_to_zone[10] = findfirst(==("NO4"), price_zones) #OK
+   area_to_zone[11] = findfirst(==("NO4"), price_zones) #OK
+
+   area_to_zone[7] = findfirst(==("NO5"), price_zones) #OK
+
+   area_to_zone[12] = findfirst(==("Others"), price_zones) #OK
+   area_to_zone[13] = findfirst(==("Others"), price_zones) #OK
+   area_to_zone[37] = findfirst(==("Others"), price_zones) #OK
+
+   area_to_zone[14] = findfirst(==("Others"), price_zones) #OK
+   area_to_zone[15] = findfirst(==("Others"), price_zones) #OK
+
+   area_to_zone[16] = findfirst(==("Others"), price_zones) #OK
+   area_to_zone[38] = findfirst(==("Others"), price_zones) #OK
+
+   area_to_zone[17] = findfirst(==("Others"), price_zones) #OK
+
+   area_to_zone[20] = findfirst(==("Others"), price_zones) #OK
+   area_to_zone[42] = findfirst(==("Others"), price_zones) #OK
+
+   area_to_zone[19] = findfirst(==("Others"), price_zones) #OK
+   area_to_zone[41] = findfirst(==("Others"), price_zones) #OK
+
+   area_to_zone[18] = findfirst(==("Others"), price_zones) #OK
+   area_to_zone[40] = findfirst(==("Others"), price_zones) #OK
+
+   NZ = length(price_zones)-1
+
+   pzGroup = create_group(file, "XNordic_Reserve_req") #hovedmappe
+   write(pzGroup, "Names", price_zones)
+   write(pzGroup, "AreaToZone", area_to_zone)      
+   write(pzGroup, "price_zones", price_zones)
+   
+
+   # -------------------------
+   # Hierarkisk: PriceZone -> Areas -> reserve/bidrag
+   # -------------------------
+   byZA = create_group(pzGroup, "ByZoneArea")
+
+   # bygg areas_in_zone fra area_to_zone
+   areas_in_zone = [Int[] for _ in 1:NZ]
+   for a in 1:model.NArea
+      z = area_to_zone[a]
+      #if z != 0
+      if 1<=z<=NZ
+         push!(areas_in_zone[z], a)
+      end
+   end
+
+   for z in 1:NZ
+      zname = price_zones[z]
+      zGroup = create_group(byZA, zname) #Per sone
+
+      # lagre total reserve for sonen her også (valgfritt, men praktisk)
+      if hasproperty(RT, :CapZoneUpTable)
+         write(zGroup, "ReserveUp",   RT.CapZoneUpTable[z,:,:,:])
+         write(zGroup, "ReserveDown", RT.CapZoneDownTable[z,:,:,:])
+         write(zGroup, "ReserveDualUp",   RT.CapDualUpTable[z,:,:,:])
+         write(zGroup, "ReserveDualDown", RT.CapDualDownTable[z,:,:,:])
+
+         for dset in ["ReserveUp","ReserveDown"]
+            attrs(zGroup[dset])["Dim 1"] = "NScen"
+            attrs(zGroup[dset])["Dim 2"] = "NStage"
+            attrs(zGroup[dset])["Dim 3"] = "NK"
+         end
+      end 
+      areasGroup = create_group(zGroup, "Areas")
+      write(zGroup, "AreaIndices", areas_in_zone[z])
+      attrs(zGroup["AreaIndices"])["Dim 1"] = "NAreaInZone"
+
+
+      for a in areas_in_zone[z]
+         aname = model.AreaName[a]
+         aGroup = create_group(areasGroup, aname)
+
+         for iSys in 1:model.NHSys
+            if iSys == a
+               # dette hydrosystemet tilhører område a
+               if hasproperty(RT, :HydroCapUpTable)
+                  write(aGroup, "HydroCapUp", RT.HydroCapUpTable[a,:,:,:])
+                  write(aGroup, "HydroCapDown", RT.HydroCapDownTable[a,:,:,:])
+
+                  for dset in ["HydroCapUp", "HydroCapDown"]
+                     attrs(aGroup[dset])["Dim 1"] = "NScen"
+                     attrs(aGroup[dset])["Dim 2"] = "NStage"
+                     attrs(aGroup[dset])["Dim 3"] = "NK"
+                  end
+               end
+            end
+         end
+
+         # Bidrag per område (finnes allerede i RT)
+         if hasproperty(RT, :MarkCapUpAreaTable)
+            write(aGroup, "WindDownArea",   RT.WindCapDownTable[a,:,:,:])
+            write(aGroup, "SpotPrice", RT.PriceTable[a,:,:,:])
+
+            for dset in ["WindDownArea", "SpotPrice"]
+                  attrs(aGroup[dset])["Dim 1"] = "NScen"
+                  attrs(aGroup[dset])["Dim 2"] = "NStage"
+                  attrs(aGroup[dset])["Dim 3"] = "NK"
+            end
+         end
+      end
+   end
+
    for iArea = 1:model.NArea
       areaGroup = create_group(file, model.AreaName[iArea])
 

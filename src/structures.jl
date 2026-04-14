@@ -384,6 +384,14 @@ struct Result
     DemandDnTable::Array{Float64}
     H2StoreTable::Array{Float64}
     H2DisTable::Array{Float64}
+    CapDualTable::Array{Float64} #added
+    WindCapDownTable::Array{Float64}
+    HydroCapDownTable::Array{Float64}
+    HydroCapUpTable::Array{Float64}
+    CapZoneDownTable::Array{Float64}
+    CapZoneUpTable::Array{Float64}
+    CapDualUpTable::Array{Float64}
+    CapDualDownTable::Array{Float64}
     ObjTable::Array{Float64}
     WaterValueTable::Array{Float64}
 end

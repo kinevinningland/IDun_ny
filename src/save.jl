@@ -5,12 +5,45 @@ function save!(RT::Result, SP_FORW,AMData,H2Data,InflowSys,NArea,NHSys,NK,NLine,
             RT.ReservoirTable[iSys,s,t,k] = JuMP.value(SP_FORW[:res][iSys,k])
             RT.SpillTable[iSys,s,t,k] = JuMP.value(SP_FORW[:spi][iSys,k])
             RT.HProdTable[iSys,s,t,k] = JuMP.value(SP_FORW[:prod][iSys,k])
+            if JuMP.haskey(SP_FORW, :cap_hydro_up)
+                RT.HydroCapUpTable[iSys,s,t,k] = JuMP.value(SP_FORW[:cap_hydro_up][iSys,k])
+            end
+            if JuMP.haskey(SP_FORW, :cap_hydro_down)
+                RT.HydroCapDownTable[iSys,s,t,k] = JuMP.value(SP_FORW[:cap_hydro_down][iSys,k])
+            end
         end
         RT.HRampTable[iSys,s,t] = JuMP.value(SP_FORW[:ramp][iSys])
-        RT.HCapTable[iSys,s,t] = JuMP.value(SP_FORW[:cap][iSys])
+        #RT.HCapTable[iSys,s,t] = JuMP.value(SP_FORW[:cap][iSys])
         RT.InflowTable[iSys,s,t] = InflowSys[iSys]
         RT.WaterValueTable[iSys,s,t] = JuMP.shadow_price(SP_FORW[:rstate][iSys])
     end
+
+    if JuMP.haskey(SP_FORW, :cap_zone_up)
+        capzu = SP_FORW[:cap_zone_up]
+        for z in axes(capzu, 1), k in axes(capzu, 2)
+            RT.CapZoneUpTable[z,s,t,k] = JuMP.value(capzu[z,k])
+        end
+    end
+
+    if JuMP.haskey(SP_FORW, :cap_zone_down)
+        capzd = SP_FORW[:cap_zone_down]
+        for z in axes(capzd, 1), k in axes(capzd, 2)
+            RT.CapZoneDownTable[z,s,t,k] = JuMP.value(capzd[z,k])
+        end
+    end
+    if JuMP.haskey(SP_FORW, :reserve_req_up)
+        czup = SP_FORW[:reserve_req_up]   # ConstraintRef-array
+        for z in axes(czup,1), k in axes(czup,2)
+            RT.CapDualUpTable[z,s,t,k] = JuMP.shadow_price(czup[z,k])
+        end
+    end
+    if JuMP.haskey(SP_FORW, :reserve_req_down)
+        czdn = SP_FORW[:reserve_req_down]   # ConstraintRef-array
+        for z in axes(czdn,1), k in axes(czdn,2)
+            RT.CapDualDownTable[z,s,t,k] = JuMP.shadow_price(czdn[z,k])
+        end
+    end
+
     for iArea = 1:NArea
         for k = 1:NK
             if AMData[iArea].NMStep > 0
@@ -25,6 +58,20 @@ function save!(RT::Result, SP_FORW,AMData,H2Data,InflowSys,NArea,NHSys,NK,NLine,
             RT.WindTable[iArea,s,t,k] = JuMP.value(SP_FORW[:wprod][iArea,k])
             RT.DemandUpTable[iArea,s,t,k] = JuMP.haskey(SP_FORW, :dr_up) ?  JuMP.value(SP_FORW[:dr_up][iArea,k]) : 0
             RT.DemandDnTable[iArea,s,t,k] = JuMP.haskey(SP_FORW, :dr_dn) ? (JuMP.value(SP_FORW[:dr_up][iArea,k]) - JuMP.value(SP_FORW[:dr_tot][iArea,k])) : 0
+            
+            if JuMP.haskey(SP_FORW, :cap_wind_down)
+                RT.WindCapDownTable[iArea,s,t,k] = JuMP.value(SP_FORW[:cap_wind_down][iArea,k])
+            end
+
+            if JuMP.haskey(SP_FORW, :capbal_area_k)
+                cb = SP_FORW[:capbal_area_k]
+                for iArea in axes(cb,1)
+                    for k in axes(cb,2)
+                        RT.CapDualTable[iArea,s,t,k] =
+                            JuMP.shadow_price(cb[iArea,k])
+                    end
+                end
+            end
         end
         if H2Data.Ind[iArea] > 0
             for k = 1:NK
