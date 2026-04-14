@@ -35,8 +35,20 @@ function print_results_h5(dataset::String,RT::Result,model::Model,parameters::Pa
       marketGroup = create_group(areaGroup, "Market")
 
       marketStepGroup = create_group(marketGroup, "Market_steps")
+      #for iMark = 1:model.AMData[iArea].NMStep
+      #   write(marketStepGroup, model.AMData[iArea].MSData[iMark].Name, RT.MarkTable[iArea,iMark,:,:,:])
+      #end
       for iMark = 1:model.AMData[iArea].NMStep
-         write(marketStepGroup, model.AMData[iArea].MSData[iMark].Name, RT.MarkTable[iArea,iMark,:,:,:])
+
+         base_name = model.AMData[iArea].MSData[iMark].Name
+         name = base_name
+
+         # Hvis navn finnes → legg til nummer
+         if haskey(marketStepGroup, name)
+            name = string(base_name, "_", iMark)
+         end
+
+         write(marketStepGroup, name, RT.MarkTable[iArea,iMark,:,:,:])
       end
 
       write(marketGroup, "Load", RT.LoadTable[iArea,:,:,:])
