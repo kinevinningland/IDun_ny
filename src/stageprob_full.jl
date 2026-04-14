@@ -99,8 +99,8 @@ module StageProbFull
 
       #CAPACITY CONSTRAINTS PER AREA [GWh/step]
       #   -Bounds minimum and maximum production when cap=0
-      @constraint(M,capup[iSys=1:NHSys,k=1:NK],prod[iSys,k]+cap[iSys] <= WeekFrac*HSys[iSys].MaxProd)
-      @constraint(M,capdn[iSys=1:NHSys,k=1:NK],prod[iSys,k]-cap[iSys] >= WeekFrac*HSys[iSys].MinProd[iWeek])
+      #@constraint(M,capup[iSys=1:NHSys,k=1:NK],prod[iSys,k]+cap[iSys] <= WeekFrac*HSys[iSys].MaxProd)
+      #@constraint(M,capdn[iSys=1:NHSys,k=1:NK],prod[iSys,k]-cap[iSys] >= WeekFrac*HSys[iSys].MinProd[iWeek])
 
       #H2 STORAGE INIT [GWh]
       @constraint(M,h2storage0[iArea=1:NH2Area,k=[1]],h2res[iArea,k]-(1.0-H2Data.Areas[iArea].CompLoss)*h2chg[iArea,k]+h2dis[iArea,k]-h2init[iArea]== 0.0)
