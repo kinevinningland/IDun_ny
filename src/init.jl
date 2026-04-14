@@ -113,9 +113,10 @@ function init_result(NArea,NHSys,NMaxMStep,NScen,NStage,NK,NLine)::Result
     DemandDnTable = zeros(Float64,NArea,NScen,NStage,NK)
     H2StoreTable = zeros(Float64,NArea,NScen,NStage,NK)
     H2DisTable = zeros(Float64,NArea,NScen,NStage,NK)
+    ObjTable = zeros(Float64, NScen, NStage)   # ny
     
     return Result(ReservoirTable,HProdTable,HRampTable,HCapTable,MarkTable,FlowTable,SpillTable,InflowTable,LoadTable,WindTable,PriceTable,
-                  RationingTable,DemandUpTable,DemandDnTable,H2StoreTable,H2DisTable)
+                  RationingTable,DemandUpTable,DemandDnTable,H2StoreTable,H2DisTable,ObjTable)
  end
 
  function init_detailed_result(NArea,NHSys,NMaxMStep,NScen,NStage,NK,NLine,NMaxMod)::DetailedResult

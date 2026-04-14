@@ -384,6 +384,7 @@ struct Result
     DemandDnTable::Array{Float64}
     H2StoreTable::Array{Float64}
     H2DisTable::Array{Float64}
+    ObjTable::Array{Float64}
 end
 
 struct DetailedResult
