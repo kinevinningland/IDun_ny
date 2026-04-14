@@ -30,6 +30,9 @@ function print_results_h5(dataset::String,RT::Result,model::Model,parameters::Pa
             attrs(hydroGroup[dset])["Dim 2"] = "NStage"
             attrs(hydroGroup[dset])["Dim 3"] = "NK"
          end
+         write(hydroGroup, "WaterValue", RT.WaterValueTable[iArea,:,:])
+         attrs(hydroGroup["WaterValue"])["Dim 1"] = "NScen"
+         attrs(hydroGroup["WaterValue"])["Dim 2"] = "NStage"
       end
 
       #Market results

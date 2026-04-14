@@ -9,6 +9,7 @@ function save!(RT::Result, SP_FORW,AMData,H2Data,InflowSys,NArea,NHSys,NK,NLine,
         RT.HRampTable[iSys,s,t] = JuMP.value(SP_FORW[:ramp][iSys])
         RT.HCapTable[iSys,s,t] = JuMP.value(SP_FORW[:cap][iSys])
         RT.InflowTable[iSys,s,t] = InflowSys[iSys]
+        RT.WaterValueTable[iSys,s,t] = JuMP.shadow_price(SP_FORW[:rstate][iSys])
     end
     for iArea = 1:NArea
         for k = 1:NK
