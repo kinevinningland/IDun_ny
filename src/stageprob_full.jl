@@ -78,7 +78,7 @@ module StageProbFull
          "NO5" => 0.338,
       )
       @constraint(M, reserve_req_up[z=1:NZ-1, k=1:NK],
-         cap_zone_up[z,k] == 3*RI_up2[pz.price_zones[z]] + 0.4 * sum(wprod[a,k] for a in areas_in_zone[z]; init=0.0) #0.3 * sum(max(MyWPData[iArea,k],0.0) for iArea in areas_in_zone[z]; init=0.0)
+         cap_zone_up[z,k] == 0#3*RI_up2[pz.price_zones[z]] + 0.4 * sum(wprod[a,k] for a in areas_in_zone[z]; init=0.0) #0.3 * sum(max(MyWPData[iArea,k],0.0) for iArea in areas_in_zone[z]; init=0.0)
       )
       @constraint(M, reserve_req_up2[z=[NZ], k=1:NK], cap_zone_up[z,k] == 0.0)
       
