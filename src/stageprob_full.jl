@@ -90,7 +90,7 @@ module StageProbFull
                   if (h2_to_area[iH2] in areas_in_zone[z]); init=0.0) +
             sum(cap_h2chg_up[iH2,k] for iH2 in 1:NH2Area
                   if (h2_to_area[iH2] in areas_in_zone[z]); init=0.0) 
-      )
+      ) #være expression?
          
          #Nedreguleringsreserver
       @variable(M, 0 <= cap_zone_down[z=1:NZ, k=1:NK], base_name="cap_zone_down")

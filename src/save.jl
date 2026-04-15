@@ -65,11 +65,8 @@ function save!(RT::Result, SP_FORW,AMData,H2Data,InflowSys,NArea,NHSys,NK,NLine,
 
             if JuMP.haskey(SP_FORW, :capbal_area_k)
                 cb = SP_FORW[:capbal_area_k]
-                for iArea in axes(cb,1)
-                    for k in axes(cb,2)
-                        RT.CapDualTable[iArea,s,t,k] =
-                            JuMP.shadow_price(cb[iArea,k])
-                    end
+                for a in axes(cb,1), kk in axes(cb,2)
+                    RT.CapDualTable[a,s,t,kk] = JuMP.shadow_price(cb[a,kk])
                 end
             end
         end
