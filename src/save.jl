@@ -20,8 +20,8 @@ function save!(RT::Result, SP_FORW,AMData,H2Data,InflowSys,NArea,NHSys,NK,NLine,
     for k = 1:NK
         RT.CapZoneUpTable[s,t,k] = JuMP.value(SP_FORW[:cap_zone_up][k])
         RT.CapZoneDownTable[s,t,k] = JuMP.value(SP_FORW[:cap_zone_down][k])
-        RT.CapDualUpTable[s,t,k] = JuMP.shadow_price(SP_FORW[:cap_zone_up][k])
-        RT.CapDualDownTable[s,t,k] = JuMP.shadow_price(SP_FORW[:cap_zone_down][k])
+        RT.CapDualUpTable[s,t,k] = JuMP.shadow_price(SP_FORW[:reserve_req_up][k])
+        RT.CapDualDownTable[s,t,k] = JuMP.shadow_price(SP_FORW[:reserve_req_down][k])
     end
     #=
     if JuMP.haskey(SP_FORW, :SP_FORW)
