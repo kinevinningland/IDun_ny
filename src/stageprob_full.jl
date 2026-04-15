@@ -67,8 +67,8 @@ module StageProbFull
          #Oppreguleringsreserver
       @variable(M, 0 <= cap_zone_up[z=1:NZ, k=1:NK], base_name="cap_zone_up")
       @variable(M, 0 <= cap_hydro_up[iSys=1:NHSys, k=1:NK], base_name="cap_hydro_up")
-      #@variable(M, 0 <= cap_h2dis_up[iH2=1:NH2Area, k=1:NK]<= H2Data.Areas[iH2].MaxDis, base_name="cap_h2dis_up")
-      #@variable(M, 0 <= cap_h2chg_up[iH2=1:NH2Area, k=1:NK]<= H2Data.Areas[iH2].MaxDis, base_name="cap_h2chg_up")
+      @variable(M, 0 <= cap_h2dis_up[iH2=1:NH2Area, k=1:NK]<= H2Data.Areas[iH2].MaxDis, base_name="cap_h2dis_up")
+      @variable(M, 0 <= cap_h2chg_up[iH2=1:NH2Area, k=1:NK]<= H2Data.Areas[iH2].MaxDis, base_name="cap_h2chg_up")
       
       RI_up2 = Dict(
          "NO1" => 0.138,
