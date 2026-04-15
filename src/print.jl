@@ -172,10 +172,10 @@ function print_results_h5(dataset::String,RT::Result,model::Model,parameters::Pa
          end
          if model.H2Data.Ind[a] > 0
             # dette H2-systemet tilhører område a
-            write(aGroup, "H2CapUpDis", DR.H2CapUpDisTable[a,:,:,:])
-            write(aGroup, "H2CapDownDis", DR.H2CapDownDisTable[a,:,:,:])
-            write(aGroup, "H2CapUpChg", DR.H2CapUpChgTable[a,:,:,:])
-            write(aGroup, "H2CapDownChg", DR.H2CapDownChgTable[a,:,:,:])
+            write(aGroup, "H2CapUpDis", RT.H2CapUpDisTable[a,:,:,:])
+            write(aGroup, "H2CapDownDis", RT.H2CapDownDisTable[a,:,:,:])
+            write(aGroup, "H2CapUpChg", RT.H2CapUpChgTable[a,:,:,:])
+            write(aGroup, "H2CapDownChg", RT.H2CapDownChgTable[a,:,:,:])
 
             for dset in ["H2CapUpDis", "H2CapDownDis", "H2CapUpChg", "H2CapDownChg"]
                attrs(aGroup[dset])["Dim 1"] = "NScen"
