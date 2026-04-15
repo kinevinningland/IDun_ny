@@ -101,10 +101,8 @@ function init_result(NArea,NHSys,NMaxMStep,NScen,NStage,NK,NLine,NZ)::Result
     HProdTable = zeros(Float64,NHSys,NScen,NStage,NK) 
     HRampTable = zeros(Float64,NHSys,NScen,NStage)  
     HCapTable = zeros(Float64,NHSys,NScen,NStage, NK)   #lagt til NK
-    #CapZoneUpTable   = zeros(Float64, NZ, NScen, NStage, NK)
-    CapZoneUpTable   = zeros(Float64, NScen, NStage, NK)
-    #CapZoneDownTable = zeros(Float64, NZ, NScen, NStage, NK)
-    CapZoneDownTable = zeros(Float64, NScen, NStage, NK) 
+    CapZoneUpTable   = zeros(Float64, NZ, NScen, NStage, NK)
+    CapZoneDownTable = zeros(Float64, NZ, NScen, NStage, NK) 
     HydroCapUpTable   = zeros(Float64, NHSys, NScen, NStage, NK)
     HydroCapDownTable = zeros(Float64, NHSys, NScen, NStage, NK)
     WindCapDownTable = zeros(Float64, NArea, NScen, NStage, NK)

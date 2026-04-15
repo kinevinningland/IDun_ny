@@ -113,15 +113,16 @@ function print_results_h5(dataset::String,RT::Result,model::Model,parameters::Pa
    write(pzGroup, "AreaToZone", area_to_zone)      
    write(pzGroup, "price_zones", price_zones)
    
-   write(pzGroup, "ReserveUp",   RT.CapZoneUpTable[:,:,:])
-   write(pzGroup, "ReserveDown", RT.CapZoneDownTable[:,:,:])
+   #write(pzGroup, "ReserveUp",   RT.CapZoneUpTable[:,:,:])
+   #write(pzGroup, "ReserveDown", RT.CapZoneDownTable[:,:,:])
    write(pzGroup, "ReserveDualUp",   RT.CapDualUpTable[:,:,:])
    write(pzGroup, "ReserveDualDown", RT.CapDualDownTable[:,:,:])
 
-   for dset in ["ReserveUp","ReserveDown","ReserveDualUp","ReserveDualDown"]
+   for dset in ["ReserveDualUp","ReserveDualDown"]
       attrs(pzGroup[dset])["Dim 1"] = "NScen"
       attrs(pzGroup[dset])["Dim 2"] = "NStage"
    end
+   
    
 
    # -------------------------
@@ -144,12 +145,12 @@ function print_results_h5(dataset::String,RT::Result,model::Model,parameters::Pa
       zGroup = create_group(byZA, zname) #Per sone
 
       # lagre total reserve for sonen her også (valgfritt, men praktisk)
-      #=
+      
       if hasproperty(RT, :CapZoneUpTable)
          write(zGroup, "ReserveUp",   RT.CapZoneUpTable[z,:,:,:])
          write(zGroup, "ReserveDown", RT.CapZoneDownTable[z,:,:,:])
-         write(zGroup, "ReserveDualUp",   RT.CapDualUpTable[z,:,:,:])
-         write(zGroup, "ReserveDualDown", RT.CapDualDownTable[z,:,:,:])
+        #write(zGroup, "ReserveDualUp",   RT.CapDualUpTable[z,:,:,:])
+         #write(zGroup, "ReserveDualDown", RT.CapDualDownTable[z,:,:,:])
 
          for dset in ["ReserveUp","ReserveDown"]
             attrs(zGroup[dset])["Dim 1"] = "NScen"
@@ -157,7 +158,7 @@ function print_results_h5(dataset::String,RT::Result,model::Model,parameters::Pa
             attrs(zGroup[dset])["Dim 3"] = "NK"
          end
       end 
-      =#
+      
       areasGroup = create_group(zGroup, "Areas")
       write(zGroup, "AreaIndices", areas_in_zone[z])
       attrs(zGroup["AreaIndices"])["Dim 1"] = "NAreaInZone"

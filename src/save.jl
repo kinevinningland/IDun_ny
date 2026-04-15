@@ -17,10 +17,14 @@ function save!(RT::Result, SP_FORW,AMData,H2Data,InflowSys,NArea,NHSys,NK,NLine,
         RT.InflowTable[iSys,s,t] = InflowSys[iSys]
         RT.WaterValueTable[iSys,s,t] = JuMP.shadow_price(SP_FORW[:rstate][iSys])
     end
+    
+    for z = 1:NZ-1, k = 1:NK
+        RT.CapZoneUpTable[z,s,t,k]   = JuMP.value(SP_FORW[:cap_zone_up][z,k])
+        RT.CapZoneDownTable[z,s,t,k] = JuMP.value(SP_FORW[:cap_zone_down][z,k])
+    end
+
     for k = 1:NK
-        RT.CapZoneUpTable[s,t,k] = JuMP.value(SP_FORW[:cap_zone_up][k])
-        RT.CapZoneDownTable[s,t,k] = JuMP.value(SP_FORW[:cap_zone_down][k])
-        RT.CapDualUpTable[s,t,k] = JuMP.shadow_price(SP_FORW[:reserve_req_up][k])
+        RT.CapDualUpTable[s,t,k]   = JuMP.shadow_price(SP_FORW[:reserve_req_up][k])
         RT.CapDualDownTable[s,t,k] = JuMP.shadow_price(SP_FORW[:reserve_req_down][k])
     end
     #=
