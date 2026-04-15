@@ -17,8 +17,14 @@ function save!(RT::Result, SP_FORW,AMData,H2Data,InflowSys,NArea,NHSys,NK,NLine,
         RT.InflowTable[iSys,s,t] = InflowSys[iSys]
         RT.WaterValueTable[iSys,s,t] = JuMP.shadow_price(SP_FORW[:rstate][iSys])
     end
-
-    if JuMP.haskey(SP_FORW, :cap_zone_up)
+    for k = 1:NK
+        RT.CapZoneUpTable[s,t,k] = JuMP.SP_FORW(SP_FORW[:cap_zone_up][k])
+        RT.CapZoneDownTable[s,t,k] = JuMP.SP_FORW(SP_FORW[:cap_zone_down][k])
+        RT.CapDualUpTable[s,t,k] = JuMP.shadow_price(SP_FORW[:cap_zone_up][k])
+        RT.CapDualDownTable[s,t,k] = JuMP.shadow_price(SP_FORW[:cap_zone_down][k])
+    end
+    #=
+    if JuMP.haskey(SP_FORW, :SP_FORW)
         capzu = SP_FORW[:cap_zone_up]
         for z in axes(capzu, 1), k in axes(capzu, 2)
             RT.CapZoneUpTable[z,s,t,k] = JuMP.value(capzu[z,k])
@@ -42,7 +48,7 @@ function save!(RT::Result, SP_FORW,AMData,H2Data,InflowSys,NArea,NHSys,NK,NLine,
         for z in axes(czdn,1), k in axes(czdn,2)
             RT.CapDualDownTable[z,s,t,k] = JuMP.shadow_price(czdn[z,k])
         end
-    end
+        =#
 
     for iArea = 1:NArea
         for k = 1:NK
