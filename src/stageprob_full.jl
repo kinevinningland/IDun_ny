@@ -77,8 +77,24 @@ module StageProbFull
          "NO4" => 0.241,
          "NO5" => 0.338,
       )
+      RI_up2 = Dict(
+         "NO1" => 0.344,
+         "NO2" => 1.4,
+         "NO3" => 0.29,
+         "NO4" => 0.35,
+         "NO5" => 1.4,
+      )
+
+      NI_up = Dict(
+         "NO1" => 0.58,
+         "NO2" => 0.37,
+         "NO3" => 0.33,
+         "NO4" => 0.31,
+         "NO5" => 0.37,
+      )
+
       @constraint(M, reserve_req_up[z=1:NZ-1, k=1:NK],
-         cap_zone_up[z,k] >= 3*3*RI_up2[pz.price_zones[z]] + 0.4 * sum(wprod[a,k] for a in areas_in_zone[z]; init=0.0) #0.3 * sum(max(MyWPData[iArea,k],0.0) for iArea in areas_in_zone[z]; init=0.0)
+         cap_zone_up[z,k] >= 3*3*RI_up2[pz.price_zones[z]] + NI_up[pz.price_zones[z]]*sum(wprod[a,k] for a in areas_in_zone[z]; init=0.0) #0.3 * sum(max(MyWPData[iArea,k],0.0) for iArea in areas_in_zone[z]; init=0.0)
       )
       @constraint(M, reserve_req_up2[z=[NZ], k=1:NK], cap_zone_up[z,k] == 0.0)
       
@@ -106,8 +122,23 @@ module StageProbFull
          "NO4" => 0.172,
          "NO5" => 0.241,
       )
+      RI_down2 = Dict(
+         "NO1" => 0.172,
+         "NO2" => 1.4,
+         "NO3" => 0.145,
+         "NO4" => 0.175,
+         "NO5" => 1.4,
+      )
+
+      NI_down = Dict(
+         "NO1" => 0.56,
+         "NO2" => 0.37,
+         "NO3" => 0.38,
+         "NO4" => 0.33,
+         "NO5" => 0.37,
+      )
       @constraint(M, reserve_req_down[z=1:NZ-1, k=1:NK],
-         cap_zone_down[z,k] >= 3*RI_down2[pz.price_zones[z]] + 0.4*sum(wprod[a,k] for a in areas_in_zone[z]; init=0.0) #wind er per area ikke prissone, så her må det kanskje endres til å være wprod[a,k] for a i areas_in_zone[z]
+         cap_zone_down[z,k] >= 3*RI_down2[pz.price_zones[z]] + NI_down[pz.price_zones[z]]*sum(wprod[a,k] for a in areas_in_zone[z]; init=0.0) #wind er per area ikke prissone, så her må det kanskje endres til å være wprod[a,k] for a i areas_in_zone[z]
       )
 
       @constraint(M, reserve_req_down2[z=[NZ], k=1:NK],
