@@ -170,6 +170,20 @@ function print_results_h5(dataset::String,RT::Result,model::Model,parameters::Pa
                end
             end
          end
+         if model.H2Data.Ind[a] > 0
+            # dette H2-systemet tilhører område a
+            write(aGroup, "H2CapUpDis", DRT.H2CapUpDisTable[a,:,:,:])
+            write(aGroup, "H2CapDownDis", DRT.H2CapDownDisTable[a,:,:,:])
+            write(aGroup, "H2CapUpChg", DRT.H2CapUpChgTable[a,:,:,:])
+            write(aGroup, "H2CapDownChg", DRT.H2CapDownChgTable[a,:,:,:])
+
+            for dset in ["H2CapUpDis", "H2CapDownDis", "H2CapUpChg", "H2CapDownChg"]
+               attrs(aGroup[dset])["Dim 1"] = "NScen"
+               attrs(aGroup[dset])["Dim 2"] = "NStage"
+               attrs(aGroup[dset])["Dim 3"] = "NK"
+            end
+            
+         end
 
          # Bidrag per område (finnes allerede i RT)
          if hasproperty(RT, :MarkCapUpAreaTable)

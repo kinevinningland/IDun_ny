@@ -123,10 +123,14 @@ end
     CapDualDownTable = zeros(Float64, 12, NScen, NStage, NK) #added
     ObjTable = zeros(Float64, NScen, NStage)   # ny
     WaterValueTable = zeros(Float64, NHSys, NScen, NStage)
+    H2CapUpDisTable   = zeros(Float64, NArea, NScen, NStage, NK)
+    H2CapDownDisTable = zeros(Float64, NArea, NScen, NStage, NK)
+    H2CapUpChgTable   = zeros(Float64, NArea, NScen, NStage, NK)
+    H2CapDownChgTable = zeros(Float64, NArea, NScen, NStage, NK)
     
     return Result(ReservoirTable,HProdTable,HRampTable,HCapTable,MarkTable,FlowTable,SpillTable,InflowTable,LoadTable,WindTable,PriceTable,
                   RationingTable,DemandUpTable,DemandDnTable,H2StoreTable,H2DisTable,CapDualTable,
-                  WindCapDownTable,HydroCapDownTable,HydroCapUpTable,CapZoneDownTable,CapZoneUpTable,CapDualUpTable,CapDualDownTable,ObjTable,WaterValueTable) #lagt til siste
+                  WindCapDownTable,HydroCapDownTable,HydroCapUpTable,CapZoneDownTable,CapZoneUpTable,CapDualUpTable,CapDualDownTable,ObjTable,WaterValueTable,H2CapUpDisTable,H2CapDownDisTable,H2CapUpChgTable,H2CapDownChgTable) #lagt til siste
 end
 
  function init_detailed_result(NArea,NHSys,NMaxMStep,NScen,NStage,NK,NLine,NMaxMod)::DetailedResult

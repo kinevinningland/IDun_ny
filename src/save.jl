@@ -77,6 +77,12 @@ function save!(RT::Result, SP_FORW,AMData,H2Data,InflowSys,NArea,NHSys,NK,NLine,
             for k = 1:NK
                 RT.H2StoreTable[iArea,s,t,k] = JuMP.value(SP_FORW[:h2res][H2Data.Ind[iArea],k])
                 RT.H2DisTable[iArea,s,t,k] = -(1.0-H2Data.Areas[H2Data.Ind[iArea]].CompLoss)*JuMP.value(SP_FORW[:h2chg][H2Data.Ind[iArea],k])+JuMP.value(SP_FORW[:h2dis][H2Data.Ind[iArea],k])
+                if JuMP.haskey(SP_FORW, :cap_h2dis_up) && JuMP.haskey(SP_FORW, :cap_h2dis_down) && JuMP.haskey(SP_FORW, :cap_h2chg_up) && JuMP.haskey(SP_FORW, :cap_h2chg_down)
+                    RT.H2CapUpDisTable[iArea,s,t,k] = JuMP.value(SP_FORW[:cap_h2dis_up][H2Data.Ind[iArea],k])
+                    RT.H2CapDownDisTable[iArea,s,t,k] = JuMP.value(SP_FORW[:cap_h2dis_down][H2Data.Ind[iArea],k])
+                    RT.H2CapUpChgTable[iArea,s,t,k] = JuMP.value(SP_FORW[:cap_h2chg_up][H2Data.Ind[iArea],k])
+                    RT.H2CapDownChgTable[iArea,s,t,k] = JuMP.value(SP_FORW[:cap_h2chg_down][H2Data.Ind[iArea],k])
+                end
             end
         end
     end

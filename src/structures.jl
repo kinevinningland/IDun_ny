@@ -388,6 +388,10 @@ struct Result
     WindCapDownTable::Array{Float64}
     HydroCapDownTable::Array{Float64}
     HydroCapUpTable::Array{Float64}
+    H2CapUpDisTable::Array{Float64}
+    H2CapDownDisTable::Array{Float64}
+    H2CapUpChgTable::Array{Float64}
+    H2CapDownChgTable::Array{Float64}
     CapZoneDownTable::Array{Float64}
     CapZoneUpTable::Array{Float64}
     CapDualUpTable::Array{Float64}

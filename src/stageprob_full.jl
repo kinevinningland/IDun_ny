@@ -78,7 +78,7 @@ module StageProbFull
          "NO5" => 0.338,
       )
       @constraint(M, reserve_req_up[z=1:NZ-1, k=1:NK],
-         cap_zone_up[z,k] >= 0#3*3*RI_up2[pz.price_zones[z]] + 0.4 * sum(wprod[a,k] for a in areas_in_zone[z]; init=0.0) #0.3 * sum(max(MyWPData[iArea,k],0.0) for iArea in areas_in_zone[z]; init=0.0)
+         cap_zone_up[z,k] >= 3*3*RI_up2[pz.price_zones[z]] + 0.4 * sum(wprod[a,k] for a in areas_in_zone[z]; init=0.0) #0.3 * sum(max(MyWPData[iArea,k],0.0) for iArea in areas_in_zone[z]; init=0.0)
       )
       @constraint(M, reserve_req_up2[z=[NZ], k=1:NK], cap_zone_up[z,k] == 0.0)
       
@@ -86,10 +86,10 @@ module StageProbFull
          cap_zone_up[z,k] ==
             sum(cap_hydro_up[iSys,k] for iSys in 1:NHSys
                  if (hydrosys_to_area[iSys] in areas_in_zone[z]); init=0.0) 
-            #+sum(cap_h2dis_up[iH2,k] for iH2 in 1:NH2Area
-             #     if (h2_to_area[iH2] in areas_in_zone[z]); init=0.0) +
-            #sum(cap_h2chg_up[iH2,k] for iH2 in 1:NH2Area
-             #     if (h2_to_area[iH2] in areas_in_zone[z]); init=0.0) 
+            +sum(cap_h2dis_up[iH2,k] for iH2 in 1:NH2Area
+                  if (h2_to_area[iH2] in areas_in_zone[z]); init=0.0) +
+            sum(cap_h2chg_up[iH2,k] for iH2 in 1:NH2Area
+                  if (h2_to_area[iH2] in areas_in_zone[z]); init=0.0) 
       )
          
          #Nedreguleringsreserver
@@ -107,7 +107,7 @@ module StageProbFull
          "NO5" => 0.241,
       )
       @constraint(M, reserve_req_down[z=1:NZ-1, k=1:NK],
-         cap_zone_down[z,k] ==0#3*RI_down2[pz.price_zones[z]] + 0.4*sum(wprod[a,k] for a in areas_in_zone[z]; init=0.0) #wind er per area ikke prissone, så her må det kanskje endres til å være wprod[a,k] for a i areas_in_zone[z]
+         cap_zone_down[z,k] >= 3*RI_down2[pz.price_zones[z]] + 0.4*sum(wprod[a,k] for a in areas_in_zone[z]; init=0.0) #wind er per area ikke prissone, så her må det kanskje endres til å være wprod[a,k] for a i areas_in_zone[z]
       )
 
       @constraint(M, reserve_req_down2[z=[NZ], k=1:NK],
@@ -118,10 +118,10 @@ module StageProbFull
          cap_zone_down[z,k] ==
             sum(cap_hydro_down[iSys,k] for iSys in 1:NHSys
                   if (hydrosys_to_area[iSys] in areas_in_zone[z]); init=0.0) +
-            #sum(cap_h2dis_down[iH2,k] for iH2 in 1:NH2Area
-             #     if (h2_to_area[iH2] in areas_in_zone[z]); init=0.0) +
-            #sum(cap_h2chg_down[iH2,k] for iH2 in 1:NH2Area
-             #     if (h2_to_area[iH2] in areas_in_zone[z]); init=0.0) +
+            sum(cap_h2dis_down[iH2,k] for iH2 in 1:NH2Area
+                  if (h2_to_area[iH2] in areas_in_zone[z]); init=0.0) +
+            sum(cap_h2chg_down[iH2,k] for iH2 in 1:NH2Area
+                  if (h2_to_area[iH2] in areas_in_zone[z]); init=0.0) +
            sum(cap_wind_down[a,k] for a in areas_in_zone[z]; init=0.0)  
       )
 
