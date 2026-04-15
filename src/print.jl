@@ -119,8 +119,8 @@ function print_results_h5(dataset::String,RT::Result,model::Model,parameters::Pa
    write(pzGroup, "ReserveDualDown", RT.CapDualDownTable[:,:,:])
 
    for dset in ["ReserveUp","ReserveDown","ReserveDualUp","ReserveDualDown"]
-      attrs(zGroup[dset])["Dim 1"] = "NScen"
-      attrs(zGroup[dset])["Dim 2"] = "NStage"
+      attrs(pzGroup[dset])["Dim 1"] = "NScen"
+      attrs(pzGroup[dset])["Dim 2"] = "NStage"
    end
    
 
