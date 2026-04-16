@@ -18,16 +18,11 @@ function save!(RT::Result, SP_FORW,AMData,H2Data,InflowSys,NArea,NHSys,NK,NLine,
         RT.WaterValueTable[iSys,s,t] = JuMP.shadow_price(SP_FORW[:rstate][iSys])
     end
 
-    for z = 6-1, k = 1:NK
-        RT.CapZoneUpTable[z,s,t,k]   = JuMP.value(SP_FORW[:cap_zone_up][z,k])
-        RT.CapZoneDownTable[z,s,t,k] = JuMP.value(SP_FORW[:cap_zone_down][z,k])
-    end
-
     #for k = 1:NK
     #    RT.CapDualUpTable[s,t,k]   = JuMP.shadow_price(SP_FORW[:reserve_req_up][k])
     #    RT.CapDualDownTable[s,t,k] = JuMP.shadow_price(SP_FORW[:reserve_req_down][k])
     #end
-    #=
+    
     if JuMP.haskey(SP_FORW, :SP_FORW)
         capzu = SP_FORW[:cap_zone_up]
         for z in axes(capzu, 1), k in axes(capzu, 2)
@@ -41,7 +36,7 @@ function save!(RT::Result, SP_FORW,AMData,H2Data,InflowSys,NArea,NHSys,NK,NLine,
             RT.CapZoneDownTable[z,s,t,k] = JuMP.value(capzd[z,k])
         end
     end
-    =#
+    
     if JuMP.haskey(SP_FORW, :reserve_req_up)
         czup = SP_FORW[:reserve_req_up]   # ConstraintRef-array
         for z in axes(czup,1), k in axes(czup,2)
