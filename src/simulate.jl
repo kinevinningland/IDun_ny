@@ -194,9 +194,10 @@ function simulate_aggregated(model::Model, inflow_model::InflowModel, parameters
                             JuMP.set_normalized_rhs(SP_FORW[:cut][iCut], strategy.CRHS[t,iCut]+adjust[iCut])
                         end
                     end
-                    for iArea = 1:model.NArea
-                        for k = 1:parameters.Time.NK
+                    for iArea=1:model.NArea
+                        for k=1:parameters.Time.NK
                             JuMP.set_normalized_rhs(SP_FORW[:wptarget][iArea,k], max(model.WPData[iArea,wYear,sWeek,k],0.0))
+                            JuMP.set_normalized_rhs(SP_FORW[:wp_avail_fix][iArea,k], max(model.WPData[iArea,wYear,sWeek,k],0.0))
                         end
                     end
 
