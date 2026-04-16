@@ -128,8 +128,8 @@ module StageProbFull
       @variable(M, 0 <= cap_hydro_down[iSys=1:NHSys, k=1:NK], base_name="cap_hydro_down")
       @variable(M, 0 <= cap_h2dis_down[iH2=1:NH2Area, k=1:NK], base_name="cap_h2dis_down")
       @variable(M, 0 <= cap_h2chg_down[iH2=1:NH2Area, k=1:NK], base_name="cap_h2chg_down")
-      @variable(M, 0 <= cap_wind_down[iArea=1:NArea,k=1:NK], base_name="cap_wind_down")
-      @variable(M, 0 <= cap_mark_down[a=1:NArea, iMark=1:AMData[a].NMStep, k=1:NK], base_name="cap_mark_down")
+      #@variable(M, 0 <= cap_wind_down[iArea=1:NArea,k=1:NK], base_name="cap_wind_down")
+      #@variable(M, 0 <= cap_mark_down[a=1:NArea, iMark=1:AMData[a].NMStep, k=1:NK], base_name="cap_mark_down")
  
       #=RI_down2 = Dict(
          "NO1" => 0.1,
@@ -194,8 +194,8 @@ module StageProbFull
       #@constraint(M, h2res_cap_up_chg[iH2=1:NH2Area, k=1:NK],h2res[iH2,k] + cap_h2chg_up[iH2,k] + cap_h2dis_up[iH2,k] <= H2Data.Areas[iH2].MaxRes)
       @constraint(M, hydroRes_cap_up[iSys=1:NHSys, k=1:NK], res[iSys,k] >= cap_hydro_up[iSys,k])
       @constraint(M, hydroRes_cap_down[iSys=1:NHSys, k=1:NK], res[iSys,k] + cap_hydro_down[iSys,k] <= HSys[iSys].MaxRes)
-      @constraint(M, mark_up[a=1:NArea, iMark=1:AMData[a].NMStep, k=1:NK; iMark in get(pos_by_area, AreaName[a], Set{Int}())], mark[a,iMark,k] + cap_mark_up[a,iMark,k] <= WeekFrac * max(0.0, AMData[a].MSData[iMark].Capacity[iWeek]))
-      @constraint(M, mark_dn[a=1:NArea, iMark=1:AMData[a].NMStep, k=1:NK; iMark in get(neg_by_area, AreaName[a], Set{Int}())], mark[a,iMark,k] - cap_mark_down[a,iMark,k] >= WeekFrac * min(0.0, AMData[a].MSData[iMark].Capacity[iWeek]))
+      #@constraint(M, mark_up[a=1:NArea, iMark=1:AMData[a].NMStep, k=1:NK; iMark in get(pos_by_area, AreaName[a], Set{Int}())], mark[a,iMark,k] + cap_mark_up[a,iMark,k] <= WeekFrac * max(0.0, AMData[a].MSData[iMark].Capacity[iWeek]))
+      #@constraint(M, mark_dn[a=1:NArea, iMark=1:AMData[a].NMStep, k=1:NK; iMark in get(neg_by_area, AreaName[a], Set{Int}())], mark[a,iMark,k] - cap_mark_down[a,iMark,k] >= WeekFrac * min(0.0, AMData[a].MSData[iMark].Capacity[iWeek]))
 
 
       #################################
