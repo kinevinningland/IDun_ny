@@ -99,14 +99,14 @@ module StageProbFull
          wp_avail[a,k] == 0.0
       )
 
-      #@constraint(M, reserve_req_up[z=1:NZ-1, k=1:NK],
-      #   cap_zone_up[z,k] >= 3*RI_up2[pz.price_zones[z]] + NI_up[pz.price_zones[z]]*sum(wp_avail[a,k] for a in areas_in_zone[z]; init=0.0) #3*RI_up2[pz.price_zones[z]] + NI_up[pz.price_zones[z]]*sum(wprod[a,k] for a in areas_in_zone[z]; init=0.0) 
-      #)
-      
-      @constraint(M, reserve_req_up[k=1:NK],
-         sum(cap_zone_up[z,k] for z=1:NZ-1) >=1.4*3 + 
-         0.17 * sum(wp_avail[a,k] for z=1:NZ-1 for a in areas_in_zone[z])
+      @constraint(M, reserve_req_up[z=1:NZ-1, k=1:NK],
+         cap_zone_up[z,k] >= 3*RI_up2[pz.price_zones[z]] + NI_up[pz.price_zones[z]]*sum(wp_avail[a,k] for a in areas_in_zone[z]; init=0.0) #3*RI_up2[pz.price_zones[z]] + NI_up[pz.price_zones[z]]*sum(wprod[a,k] for a in areas_in_zone[z]; init=0.0) 
       )
+      
+      #@constraint(M, reserve_req_up[k=1:NK],
+      #   sum(cap_zone_up[z,k] for z=1:NZ-1) >=1.4*3 + 
+      #   0.17 * sum(wp_avail[a,k] for z=1:NZ-1 for a in areas_in_zone[z])
+      #)
       
 
       @constraint(M, reserve_req_up2[z=[NZ], k=1:NK], cap_zone_up[z,k] == 0.0)
@@ -153,14 +153,14 @@ module StageProbFull
          "NO4" => 0.33,
          "NO5" => 0.37,
       )
-      #@constraint(M, reserve_req_down[z=1:NZ-1, k=1:NK],
-      #   cap_zone_down[z,k] >= 3*RI_down2[pz.price_zones[z]] + NI_down[pz.price_zones[z]]*sum(wp_avail[a,k] for a in areas_in_zone[z]; init=0.0) #wind er per area ikke prissone, så her må det kanskje endres til å være wprod[a,k] for a i areas_in_zone[z]
-      #)
-      
-      @constraint(M, reserve_req_down[k=1:NK],
-         sum(cap_zone_down[z,k] for z=1:NZ-1) >=1.4*3 + 
-         0.17 * sum(wp_avail[a,k] for z=1:NZ-1 for a in areas_in_zone[z])
+      @constraint(M, reserve_req_down[z=1:NZ-1, k=1:NK],
+         cap_zone_down[z,k] >= 3*RI_down2[pz.price_zones[z]] + NI_down[pz.price_zones[z]]*sum(wp_avail[a,k] for a in areas_in_zone[z]; init=0.0) #wind er per area ikke prissone, så her må det kanskje endres til å være wprod[a,k] for a i areas_in_zone[z]
       )
+      
+      #@constraint(M, reserve_req_down[k=1:NK],
+      #   sum(cap_zone_down[z,k] for z=1:NZ-1) >=1.4*3 + 
+      #   0.17 * sum(wp_avail[a,k] for z=1:NZ-1 for a in areas_in_zone[z])
+      #)
 
       @constraint(M, reserve_req_down2[z=[NZ], k=1:NK],
          cap_zone_down[z,k] == 0.0
@@ -182,7 +182,8 @@ module StageProbFull
          #koble hver teknologis cap-variabel til dens egne fysiske grenser: (sjekke om de skal ganges med weekfrac eller ikke)
       @constraint(M, hydro_up[iSys=1:NHSys, k=1:NK], prod[iSys,k] + cap_hydro_up[iSys,k] <= WeekFrac * HSys[iSys].MaxProd)  #OK
       @constraint(M, hydro_dn[iSys=1:NHSys, k=1:NK], prod[iSys,k] - cap_hydro_down[iSys,k] >= WeekFrac * HSys[iSys].MinProd[iWeek]) #OK
-      @constraint(M, wptarget[iArea=1:NArea,k=1:NK], wprod[iArea,k] + cap_wind_down[iArea,k] <= max(MyWPData[iArea,k],0.0)) #OK
+      @constraint(M, wind_dn[iArea=1:NArea,k=1:NK], wprod[iArea,k] >= cap_wind_down[iArea,k]) #OK
+      @constraint(M,wind_dn2[iArea=1:NArea,k=1:NK], cap_wind_down[iArea,k] <= max(MyWPData[iArea,k],0.0))
       #@constraint(M, h2dis_up[iH2=1:NH2Area, k=1:NK], h2dis[iH2,k] + cap_h2dis_up[iH2,k] <= H2Data.Areas[iH2].MaxDis) #OK
       #@constraint(M, h2chg_up[iH2=1:NH2Area, k=1:NK], h2chg[iH2,k] >= cap_h2chg_up[iH2,k]) #OK
       #@constraint(M, h2dis_down[iH2=1:NH2Area, k=1:NK], h2dis[iH2,k] >= cap_h2dis_down[iH2,k]) #OK
@@ -299,7 +300,7 @@ module StageProbFull
       #@constraint(M,capbal[k=1:NK],sum(cap[iSys] for iArea=1:NArea for iSys=1:NAreaSys[iArea]) >= WeekFrac*CapReq)
 
       #WIND POWER TARGET [GWh/step]
-      #@constraint(M,wptarget[iArea=1:NArea,k=1:NK], wprod[iArea,k] <= max(MyWPData[iArea,k],0.0))
+      @constraint(M,wptarget[iArea=1:NArea,k=1:NK], wprod[iArea,k] <= max(MyWPData[iArea,k],0.0))
 
       if LEndVal
          if EV.NEndCut > 0
