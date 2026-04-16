@@ -119,10 +119,10 @@ function init_result(NArea,NHSys,NMaxMStep,NScen,NStage,NK,NLine,NZ)::Result
     H2StoreTable = zeros(Float64,NArea,NScen,NStage,NK)
     H2DisTable = zeros(Float64,NArea,NScen,NStage,NK)
     CapDualTable = zeros(Float64, NArea, NScen, NStage, NK) #added
-    #CapDualUpTable = zeros(Float64, NZ, NScen, NStage, NK) #added
-    #CapDualDownTable = zeros(Float64, NZ, NScen, NStage, NK) #added
-    CapDualUpTable = zeros(Float64, NScen, NStage, NK) #added
-    CapDualDownTable = zeros(Float64, NScen, NStage, NK) #added
+    CapDualUpTable = zeros(Float64, NZ, NScen, NStage, NK) #added
+    CapDualDownTable = zeros(Float64, NZ, NScen, NStage, NK) #added
+    #CapDualUpTable = zeros(Float64, NScen, NStage, NK) #added
+    #CapDualDownTable = zeros(Float64, NScen, NStage, NK) #added
     ObjTable = zeros(Float64, NScen, NStage)   # ny
     WaterValueTable = zeros(Float64, NHSys, NScen, NStage)
     H2CapUpDisTable   = zeros(Float64, NArea, NScen, NStage, NK)

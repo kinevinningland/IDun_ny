@@ -60,6 +60,7 @@ function simulate_detailed(model::Model, inflow_model::InflowModel, parameters::
                     for iArea=1:model.NArea
                         for k=1:parameters.Time.NK
                             JuMP.set_normalized_rhs(SP_FORW[:wptarget][iArea,k], max(model.WPData[iArea,iScen,sWeek,k],0.0))
+                            JuMP.set_normalized_rhs(SP_FORW[:wp_avail_fix][iArea,k], max(model.WPData[iArea,iScen,sWeek,k],0.0))
                         end
                     end
                 

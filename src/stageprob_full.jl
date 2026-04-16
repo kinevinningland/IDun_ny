@@ -17,7 +17,7 @@ module StageProbFull
       NLoadRecStep = DR.NLoadRecStep
       MaxLoadRec = DR.LoadRec[NLoadRecStep]
       
-      @variable(M,0.0 <= ner[iSys=1:NHSys,k=1:NK] <= CNS.Big,base_name="ner")                                                             # GWh
+      @variable(M,0.0 <= ner[iSys=1:NHSys,k=1:NK] <= CNS.Big,base_name="ner")                                                      # GWh
       @variable(M,0.0 <= mir[iSys=1:NHSys,k=1:NK] <= HSys[iSys].MinRes, base_name="mir")                                           # GWh
       @variable(M,0.0 <= res[iSys=1:NHSys,k=1:NK] <= HSys[iSys].MaxRes, base_name="res")                                           # GWh
       @variable(M,0.0 <= spi[iSys=1:NHSys,k=1:NK] <= CNS.Big, base_name="spi")                                                     # GWh/step
@@ -70,13 +70,13 @@ module StageProbFull
       @variable(M, 0 <= cap_h2dis_up[iH2=1:NH2Area, k=1:NK]<= H2Data.Areas[iH2].MaxDis, base_name="cap_h2dis_up")
       @variable(M, 0 <= cap_h2chg_up[iH2=1:NH2Area, k=1:NK]<= H2Data.Areas[iH2].MaxDis, base_name="cap_h2chg_up")
       
-      RI_up2 = Dict(
+      #=RI_up2 = Dict(
          "NO1" => 0.138,
          "NO2" => 0.564,
          "NO3" => 0.116,
          "NO4" => 0.241,
          "NO5" => 0.338,
-      )
+      )=#
       RI_up2 = Dict(
          "NO1" => 0.344,
          "NO2" => 1.4,
@@ -92,15 +92,21 @@ module StageProbFull
          "NO4" => 0.31,
          "NO5" => 0.37,
       )
+      @variable(M, wp_avail[a=1:NArea, k=1:NK] >= 0, base_name="wp_avail")
 
-      #@constraint(M, reserve_req_up[z=1:NZ-1, k=1:NK],
-      #   cap_zone_up[z,k] >= 3*RI_up2[pz.price_zones[z]] + NI_up[pz.price_zones[z]]*sum(wprod[a,k] for a in areas_in_zone[z]; init=0.0) #0.3 * sum(max(MyWPData[iArea,k],0.0) for iArea in areas_in_zone[z]; init=0.0)
-      #)
+      @constraint(M, wp_avail_fix[a=1:NArea, k=1:NK],
+         wp_avail[a,k] == 0.0
+      )
 
+      @constraint(M, reserve_req_up[z=1:NZ-1, k=1:NK],
+         cap_zone_up[z,k] >= 3*RI_up2[pz.price_zones[z]] + NI_up[pz.price_zones[z]]*sum(wp_avail[a,k] for a in areas_in_zone[z]; init=0.0) #3*RI_up2[pz.price_zones[z]] + NI_up[pz.price_zones[z]]*sum(wprod[a,k] for a in areas_in_zone[z]; init=0.0) 
+      )
+      #=
       @constraint(M, reserve_req_up[k=1:NK],
          sum(cap_zone_up[z,k] for z=1:NZ-1) >=1.4*3 + 
          0.17 * sum(wprod[a,k] for z=1:NZ-1 for a in areas_in_zone[z])
       )
+      =#
 
       @constraint(M, reserve_req_up2[z=[NZ], k=1:NK], cap_zone_up[z,k] == 0.0)
       
@@ -108,10 +114,10 @@ module StageProbFull
          cap_zone_up[z,k] ==
             sum(cap_hydro_up[iSys,k] for iSys in 1:NHSys
                  if (hydrosys_to_area[iSys] in areas_in_zone[z]); init=0.0) 
-            +sum(cap_h2dis_up[iH2,k] for iH2 in 1:NH2Area
-                  if (h2_to_area[iH2] in areas_in_zone[z]); init=0.0) +
-            sum(cap_h2chg_up[iH2,k] for iH2 in 1:NH2Area
-                  if (h2_to_area[iH2] in areas_in_zone[z]); init=0.0) 
+            #+sum(cap_h2dis_up[iH2,k] for iH2 in 1:NH2Area
+            #      if (h2_to_area[iH2] in areas_in_zone[z]); init=0.0) +
+            #sum(cap_h2chg_up[iH2,k] for iH2 in 1:NH2Area
+            #      if (h2_to_area[iH2] in areas_in_zone[z]); init=0.0) 
       ) #være expression?
          
          #Nedreguleringsreserver
@@ -121,13 +127,13 @@ module StageProbFull
       @variable(M, 0 <= cap_h2chg_down[iH2=1:NH2Area, k=1:NK], base_name="cap_h2chg_down")
       @variable(M, 0 <= cap_wind_down[iArea=1:NArea,k=1:NK], base_name="cap_wind_down")
  
-      RI_down2 = Dict(
+      #=RI_down2 = Dict(
          "NO1" => 0.1,
          "NO2" => 0.804,
          "NO3" => 0.083,
          "NO4" => 0.172,
          "NO5" => 0.241,
-      )
+      )=#
       RI_down2 = Dict(
          "NO1" => 0.172,
          "NO2" => 1.4,
@@ -143,14 +149,17 @@ module StageProbFull
          "NO4" => 0.33,
          "NO5" => 0.37,
       )
-      #@constraint(M, reserve_req_down[z=1:NZ-1, k=1:NK],
-      #   cap_zone_down[z,k] >= 3*RI_down2[pz.price_zones[z]] + NI_down[pz.price_zones[z]]*sum(wprod[a,k] for a in areas_in_zone[z]; init=0.0) #wind er per area ikke prissone, så her må det kanskje endres til å være wprod[a,k] for a i areas_in_zone[z]
-      #)
+      @constraint(M, reserve_req_down[z=1:NZ-1, k=1:NK],
+         cap_zone_down[z,k] >= 3*RI_down2[pz.price_zones[z]] + NI_down[pz.price_zones[z]]*sum(wp_avail[a,k] for a in areas_in_zone[z]; init=0.0) #wind er per area ikke prissone, så her må det kanskje endres til å være wprod[a,k] for a i areas_in_zone[z]
+      )
+      
+      #=
       @constraint(M, reserve_req_down[k=1:NK],
          sum(cap_zone_down[z,k] for z=1:NZ-1) >=1.4*3 + 
          sum(sum(wprod[a,k] for a in areas_in_zone[z]; init=0.0)
             for z=1:NZ-1)*0.17
       )
+      =#
 
       @constraint(M, reserve_req_down2[z=[NZ], k=1:NK],
          cap_zone_down[z,k] == 0.0
@@ -160,10 +169,10 @@ module StageProbFull
          cap_zone_down[z,k] ==
             sum(cap_hydro_down[iSys,k] for iSys in 1:NHSys
                   if (hydrosys_to_area[iSys] in areas_in_zone[z]); init=0.0) +
-            sum(cap_h2dis_down[iH2,k] for iH2 in 1:NH2Area
-                  if (h2_to_area[iH2] in areas_in_zone[z]); init=0.0) +
-            sum(cap_h2chg_down[iH2,k] for iH2 in 1:NH2Area
-                  if (h2_to_area[iH2] in areas_in_zone[z]); init=0.0) +
+            #sum(cap_h2dis_down[iH2,k] for iH2 in 1:NH2Area
+            #      if (h2_to_area[iH2] in areas_in_zone[z]); init=0.0) +
+            #sum(cap_h2chg_down[iH2,k] for iH2 in 1:NH2Area
+            #      if (h2_to_area[iH2] in areas_in_zone[z]); init=0.0) +
            sum(cap_wind_down[a,k] for a in areas_in_zone[z]; init=0.0)  
       )
 

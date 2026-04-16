@@ -115,14 +115,15 @@ function print_results_h5(dataset::String,RT::Result,model::Model,parameters::Pa
    
    #write(pzGroup, "ReserveUp",   RT.CapZoneUpTable[:,:,:])
    #write(pzGroup, "ReserveDown", RT.CapZoneDownTable[:,:,:])
-   write(pzGroup, "ReserveDualUp",   RT.CapDualUpTable[:,:,:])
-   write(pzGroup, "ReserveDualDown", RT.CapDualDownTable[:,:,:])
-
+   #write(pzGroup, "ReserveDualUp",   RT.CapDualUpTable[:,:,:])
+   #write(pzGroup, "ReserveDualDown", RT.CapDualDownTable[:,:,:])
+   #=
    for dset in ["ReserveDualUp","ReserveDualDown"]
       attrs(pzGroup[dset])["Dim 1"] = "NScen"
       attrs(pzGroup[dset])["Dim 2"] = "NStage"
       attrs(pzGroup[dset])["Dim 3"] = "NK"
    end
+   =#
    
    
 
@@ -150,8 +151,8 @@ function print_results_h5(dataset::String,RT::Result,model::Model,parameters::Pa
       if hasproperty(RT, :CapZoneUpTable)
          write(zGroup, "ReserveUp",   RT.CapZoneUpTable[z,:,:,:])
          write(zGroup, "ReserveDown", RT.CapZoneDownTable[z,:,:,:])
-        #write(zGroup, "ReserveDualUp",   RT.CapDualUpTable[z,:,:,:])
-         #write(zGroup, "ReserveDualDown", RT.CapDualDownTable[z,:,:,:])
+         write(zGroup, "ReserveDualUp",   RT.CapDualUpTable[z,:,:,:])
+         write(zGroup, "ReserveDualDown", RT.CapDualDownTable[z,:,:,:])
 
          for dset in ["ReserveUp","ReserveDown"]
             attrs(zGroup[dset])["Dim 1"] = "NScen"
