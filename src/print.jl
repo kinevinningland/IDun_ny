@@ -121,6 +121,7 @@ function print_results_h5(dataset::String,RT::Result,model::Model,parameters::Pa
    for dset in ["ReserveDualUp","ReserveDualDown"]
       attrs(pzGroup[dset])["Dim 1"] = "NScen"
       attrs(pzGroup[dset])["Dim 2"] = "NStage"
+      attrs(pzGroup[dset])["Dim 3"] = "NK"
    end
    
    
