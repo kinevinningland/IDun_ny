@@ -201,7 +201,7 @@ function print_results_h5(dataset::String,RT::Result,model::Model,parameters::Pa
          end
 
          # Bidrag per område (finnes allerede i RT)
-         if hasproperty(RT, :MarkCapUpAreaTable)
+         if hasproperty(RT, :WindCapDownTable)
             write(aGroup, "WindDownArea",   RT.WindCapDownTable[a,:,:,:])
             write(aGroup, "SpotPrice", RT.PriceTable[a,:,:,:])
 
