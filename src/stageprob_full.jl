@@ -99,8 +99,7 @@ module StageProbFull
 
       @constraint(M, reserve_req_up[k=1:NK],
          sum(cap_zone_up[z,k] for z=1:NZ-1) >=1.4*3 + 
-         sum(sum(wprod[a,k] for a in areas_in_zone[z]; init=0.0)
-            for z=1:NZ-1)*0.17
+         0.17 * sum(wprod[a,k] for z=1:NZ-1 for a in areas_in_zone[z])
       )
 
       @constraint(M, reserve_req_up2[z=[NZ], k=1:NK], cap_zone_up[z,k] == 0.0)
