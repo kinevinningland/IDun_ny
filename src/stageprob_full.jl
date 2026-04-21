@@ -83,7 +83,6 @@ module StageProbFull
          "NO2" => 1.4,
          "NO3" => 0.29,
          "NO4" => 0.35,
-         "NO5" => 1.4,
       )
 
       NI_up = Dict(
@@ -91,7 +90,6 @@ module StageProbFull
          "NO2" => 0.37,
          "NO3" => 0.33,
          "NO4" => 0.31,
-         "NO5" => 0.37,
       )
       @variable(M, wp_avail[a=1:NArea, k=1:NK] >= 0, base_name="wp_avail")
 
@@ -143,7 +141,6 @@ module StageProbFull
          "NO2" => 1.4,
          "NO3" => 0.145,
          "NO4" => 0.175,
-         "NO5" => 1.4,
       )
 
       NI_down = Dict(
@@ -151,7 +148,6 @@ module StageProbFull
          "NO2" => 0.37,
          "NO3" => 0.38,
          "NO4" => 0.33,
-         "NO5" => 0.37,
       )
       @constraint(M, reserve_req_down[z=1:NZ-1, k=1:NK],
          cap_zone_down[z,k] >= 3*RI_down2[pz.price_zones[z]] + NI_down[pz.price_zones[z]]*sum(wp_avail[a,k] for a in areas_in_zone[z]; init=0.0) #wind er per area ikke prissone, så her må det kanskje endres til å være wprod[a,k] for a i areas_in_zone[z]

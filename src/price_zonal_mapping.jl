@@ -32,7 +32,7 @@ function build_price_zone_map(
     H2Data
 )
 
-    price_zones = ["NO1","NO2","NO3","NO4","NO5","Others"]#,"SE1","SE2","SE3","SE4","DK1","DK2","FI","Others"]#["NUMEDAL","OTRA","TERM","TEV"]#
+    price_zones = ["NO1","NO2","NO3","NO4","Others"]#,"SE1","SE2","SE3","SE4","DK1","DK2","FI","Others"]#["NUMEDAL","OTRA","TERM","TEV"]#
     area_to_zone = fill(0, NArea)
     #area_to_zone[1] = findfirst(==("NUMEDAL"), price_zones)
     #area_to_zone[2] = findfirst(==("OTRA"), price_zones)
@@ -136,7 +136,7 @@ function build_price_zone_map(
     =#
 
     area_to_zone[33] = findfirst(==("NO3"), price_zones) #OK
-    area_to_zone[34] = findfirst(==("NO5"), price_zones) #OK
+    area_to_zone[34] = findfirst(==("NO2"), price_zones) #OK #var NO5
     area_to_zone[35] = findfirst(==("NO2"), price_zones) #OK
     area_to_zone[36] = findfirst(==("NO2"), price_zones) #OK
     area_to_zone[39] = findfirst(==("Others"), price_zones) #OK
@@ -165,7 +165,7 @@ function build_price_zone_map(
     area_to_zone[10] = findfirst(==("NO4"), price_zones) #OK
     area_to_zone[11] = findfirst(==("NO4"), price_zones) #OK
 
-    area_to_zone[7] = findfirst(==("NO5"), price_zones) #OK
+    area_to_zone[7] = findfirst(==("NO2"), price_zones) #OK #Var NO5
 
     area_to_zone[12] = findfirst(==("Others"), price_zones) #OK
     area_to_zone[13] = findfirst(==("Others"), price_zones) #OK
